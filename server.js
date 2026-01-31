@@ -29,7 +29,7 @@ const app = express()
 app.use(express.json())
 app.post('/merge-video', async (req, res) => {
   let { videosUrlArr } = req.body
-  let result = await handler({ input: videosUrlArr })
+  let result = await handler({ input: { videosUrlArr } })
   res.json({ message: '合并成功！', video_url: result.video_url })
 })
 
