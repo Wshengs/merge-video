@@ -2,7 +2,6 @@ import fs from 'fs-extra'
 import path from 'path'
 import os from 'os'
 import axios from 'axios'
-import logger from 'logger'
 import ffmpeg from 'fluent-ffmpeg'
 import ffmpegStatic from 'ffmpeg-static'
 import ffprobeStatic from 'ffprobe-static'
@@ -46,11 +45,11 @@ export async function handler({ input }) {
       const localFiles = []
       for (let i = 0; i < urls.length; i++) {
         const filePath = path.join(tempDir, `${i}.mp4`)
-        logger.info(`⬇️ 下载视频 ${i + 1}/${urls.length}: ${urls[i]}`)
+        console.log(`⬇️ 下载视频 ${i + 1}/${urls.length}: ${urls[i]}`)
         await downloadVideo(urls[i], filePath)
         localFiles.push(filePath)
       }
-      logger.info(localFiles)
+      console.log(localFiles)
       // 使用 fluent-ffmpeg 动态添加输入
       const command = ffmpeg()
       localFiles.forEach(file => command.input(file))
@@ -67,14 +66,14 @@ export async function handler({ input }) {
             },
           ])
           .outputOptions(['-map [outv]', '-map [outa]'])
-          .on('start', cmd => logger.info('ffmpeg 命令:', cmd))
-          .on('progress', progress => logger.info('进度:', progress))
+          .on('start', cmd => console.log('ffmpeg 命令:', cmd))
+          .on('progress', progress => console.log('进度:', progress))
           .on('error', err => {
-            logger.info('合并出错:', err)
+            console.log('合并出错:', err)
             resolve(true)
           })
           .on('end', () => {
-            logger.info('合并完成:', output)
+            console.log('合并完成:', output)
             resolve(true)
           })
           .mergeToFile(output, tempDir) // tempDir 用作临时目录
@@ -90,10 +89,10 @@ export async function handler({ input }) {
     input.videosUrlArr,
     path.resolve(process.cwd(), videoName),
   )
-  logger.info(path.resolve(process.cwd(), videoName))
+  console.log(path.resolve(process.cwd(), videoName))
 
   // async function uploadFile(filePath) {
-  //   logger.info('开始上传了')
+  //   console.log('开始上传了')
   //   const form = new FormData()
 
   //   form.append('file', fs.createReadStream(filePath))
@@ -102,7 +101,7 @@ export async function handler({ input }) {
   //     headers: form.getHeaders(),
   //   })
 
-  //   logger.info(res.data)
+  //   console.log(res.data)
   // }
 
   // 示例
