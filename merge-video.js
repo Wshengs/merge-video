@@ -39,7 +39,7 @@ export async function handler({ input }) {
 
     // 创建临时目录
     // const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'public'))
-    const tempDir = path.join(__dirname, 'public')
+    const tempDir = path.join(process.pwd(), 'public')
 
     try {
       // 下载所有视频
@@ -88,9 +88,9 @@ export async function handler({ input }) {
   let videoName = date.getDate() + date.getTime() + '.mp4'
   let a = await mergeVideosFromUrls(
     input.videosUrlArr,
-    path.resolve(__dirname, videoName),
+    path.resolve(process.pwd(), videoName),
   )
-  logger.info(path.resolve(__dirname, videoName))
+  logger.info(path.resolve(process.pwd(), videoName))
 
   // async function uploadFile(filePath) {
   //   logger.info('开始上传了')
@@ -107,7 +107,7 @@ export async function handler({ input }) {
 
   // 示例
 
-  // await uploadFile(path.resolve(__dirname, videoName))
+  // await uploadFile(path.resolve(process.pwd(), videoName))
 
   return {
     video_url: `http://101.200.91.141:3001/${videoName}`,

@@ -28,8 +28,8 @@ const app = express()
 // })
 app.use(express.json())
 app.post('/merge-video', async (req, res) => {
-    let {videosUrlArr} = req.body
-    let result = await handler(videosUrlArr)
+  let { videosUrlArr } = req.body
+  let result = await handler({ input: videosUrlArr })
   res.json({ message: '合并成功！', video_url: result.video_url })
 })
 
@@ -38,7 +38,7 @@ app.use((req, res, next) => {
   req.setTimeout(20 * 60 * 1000)
   next()
 })
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(process.pwd(), 'public')))
 app.listen(3001, '0.0.0.0', () => {
   console.log('上传服务已启动: http://0.0.0.0:3001')
 })
