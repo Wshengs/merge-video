@@ -38,7 +38,7 @@ app.use((req, res, next) => {
   req.setTimeout(20 * 60 * 1000)
   next()
 })
-app.use(express.static(path.join(process.pwd(), 'public')))
+app.use(express.static(path.join(process.cwd(), 'public')))
 app.listen(3001, '0.0.0.0', () => {
   console.log('上传服务已启动: http://0.0.0.0:3001')
 })
